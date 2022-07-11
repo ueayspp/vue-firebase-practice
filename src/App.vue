@@ -8,19 +8,21 @@
 </template>
 
 <script>
+import { getAuth, signOut } from 'firebase/auth'
+
 export default {
   methods: {
     logout() {
-      firebase
-        .auth()
-        .signOut()
+      const auth = getAuth()
+      signOut(auth)
         .then(() => {
           alert('Successfully logged out')
           this.$router.push('/')
         })
         .catch((error) => {
-          alert(error.message)
-          this.$router.push('/')
+          const errorCode = error.code
+          const errorMessage = error.message
+          alert(errorMessage)
         })
     },
   },
