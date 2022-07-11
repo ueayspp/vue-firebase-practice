@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 
 export default {
   name: 'Home',
@@ -22,15 +22,17 @@ export default {
   },
   methods: {
     login() {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(this.email, this.password)
-        .then(() => {
+      const auth = getAuth()
+      signInWithEmailAndPassword(auth, this.email, this.password)
+        .then((userCredential) => {
+          const user = userCredential.user
           alert('Successfully logged in')
           this.$router.push('/dashboard')
         })
         .catch((error) => {
-          alert(error.message)
+          const errorCode = error.code
+          const errorMessage = error.message
+          alert(errorMessage)
         })
     },
   },

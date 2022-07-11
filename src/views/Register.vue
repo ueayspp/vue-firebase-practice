@@ -10,7 +10,8 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+
 export default {
   name: 'Register',
   data() {
@@ -21,15 +22,17 @@ export default {
   },
   methods: {
     register() {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(this.email, this.password)
-        .then(() => {
+      const auth = getAuth()
+      createUserWithEmailAndPassword(auth, this.email, this.password)
+        .then((userCredential) => {
+          const user = userCredential.user
           alert('Successfully registered! Please login.')
           this.$router.push('/')
         })
         .catch((error) => {
-          alert(error.message)
+          const errorCode = error.code
+          const errorMessage = error.message
+          alert(errorMessage)
         })
     },
   },
