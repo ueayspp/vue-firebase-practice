@@ -11,6 +11,7 @@
 
 <script>
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import Cookies from 'js-cookie'
 
 export default {
   name: 'Home',
@@ -27,6 +28,8 @@ export default {
         .then((userCredential) => {
           const user = userCredential.user
           alert('Successfully logged in')
+          const token = this.email
+          Cookies.set('access_token', token, { expires: 1 })
           this.$router.push('/dashboard')
         })
         .catch((error) => {
